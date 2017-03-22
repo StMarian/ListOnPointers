@@ -70,7 +70,7 @@ int main()
 		case '3':
 			cout << "Enter string to be removed: ";
 			cin >> temp_str;
-			// TODO
+			ListRemove(list, temp_str);
 			break;
 		case '4':
 			cout << "Number of strings in list: ";
@@ -79,6 +79,9 @@ int main()
 		case '5':
 			cout << "Capacity of a list: ";
 			cout << ListCapacity(list) << endl;
+			break;
+		case '6':
+			//TODO
 			break;
 		default:
 			cout << "Bad input!" << endl;

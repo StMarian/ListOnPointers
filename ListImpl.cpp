@@ -36,20 +36,19 @@ void PrintList(char** list)
 
 	cout << "Capacity of a list: " << ListCapacity(list) << "| strings in list: " << ListSize(list) << endl;
 
-	for (int i = 2; i < ListSize(list) + 2; i++) {
+	for (int i = 2; i < ListSize(list) + 2; i++)
 		printf("String #%d(length: %lu): %s\n", i - 2, strlen(list[i]), list[i]);
-	}
 } 
 
 void ListAdd(char** list, char* str)
 {
+	// TODO reallocate
 	if (ListSize(list) == ListCapacity(list))
 	{
 		cout << "No place in list!" << endl;
 		return;
 	}
-
-
+	
 	// size increased
 	list[1][0]++;
 
@@ -59,6 +58,20 @@ void ListAdd(char** list, char* str)
 
 void ListRemove(char** list, char* str)
 {
+	for (int i = 2; i < ListSize(list) + 2; i++)
+	{
+		if (!strcmp(list[i], str))	// strcmp returns 0 when strings are equal
+		{
+			//list[i] = NULL;
+			list[1][0]--;
+
+			// shift right part of an array
+			for (int j = i; j < ListSize(list) + 2; j++)
+			{
+				memcpy(list[j], list[j + 1], sizeof(list[j + 1]));
+			}
+		}
+	}
 }
 
 int ListCapacity(char** list)
