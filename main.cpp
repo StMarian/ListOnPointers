@@ -12,7 +12,7 @@ int main()
 	
 	system("cls");
 
-	// allocate memory	
+	// ---- allocate memory -----	
 	list = reinterpret_cast<char**>(calloc(init_size + 2, sizeof(char*)));
 	
 	// capacity
@@ -34,17 +34,9 @@ int main()
 	{
 		cout << "Memory trouble!\n";
 		system("pause");
-		return -1;
+		exit(-1);
 	}
-	// end of a list		-- TODO: unnecessasry
-//	list[12] = NULL;
-
-	// end allocate memory
-
-	////test
-	//list[2] = "asdasd";
-	//list[3] = "alala";
-	//list[4] = "lululu";
+	// ----- end allocate memory -----
 
 	cout << "Press\n1 to list your array\n2 to enter and add string to an array\n3 to enter and remove string from array\n4 to get the numbers of strings in array\n5 to get the capacity of the list\n6 to enter a string and find index of it in array\nq to quit\n";
 	

@@ -2,6 +2,11 @@
 
 #include <stdio.h> // fot printf
 
+/*
+	calls form this:
+	char** list;
+	ListInit(&list);
+*/
 void ListInit(char*** list, int length)
 {
 	// first 2 entries would be capacity and actual size of a list
@@ -19,9 +24,7 @@ void ListInit(char*** list, int length)
 void ListDestroy(char*** list)
 {
 	for (int i = 0; i < ListCapacity(*list); i++)
-	{
 		free(*list[i]);
-	}
 
 	free(*list);
 }
@@ -36,24 +39,37 @@ void PrintList(char** list)
 
 	cout << "Capacity of a list: " << ListCapacity(list) << "| strings in list: " << ListSize(list) << endl;
 
-	for (int i = 2; i < ListSize(list) + 2; i++)
+	for (int i = 2; i < ListCapacity(list) + 2; i++)
 		printf("String #%d(length: %lu): %s\n", i - 2, strlen(list[i]), list[i]);
 } 
 
+// TODO reset capacity
+void ReallocateList(char*** list, size_t oldsize, size_t newsize)
+{
+	*list = reinterpret_cast<char**>(realloc(*list, newsize * sizeof(char**)));
+
+	memset(*list + oldsize * sizeof(char*), 0, newsize * sizeof(char));
+
+	*list[0][0] = newsize; // delete
+	PrintList(*list);
+
+	if (list == NULL)
+	{
+		cout << "Memory trouble!\n";
+		system("pause");
+		exit(-1);
+	}
+}
+
 void ListAdd(char** list, char* str)
 {
-	// TODO reallocate
 	if (ListSize(list) == ListCapacity(list))
-	{
-		cout << "No place in list!" << endl;
-		return;
-	}
+		ReallocateList(&list, sizeof(char) * ListCapacity(list), sizeof(char) * (ListCapacity(list) * 3 / 2 + 1));
 	
 	// size increased
 	list[1][0]++;
 
 	memcpy(list[1 + ListSize(list)], str, sizeof(str));
-
 }
 
 void ListRemove(char** list, char* str)
@@ -64,7 +80,7 @@ void ListRemove(char** list, char* str)
 		{
 			list[1][0]--;
 
-			// shift right part of an array
+			// left shift by 1 pos. right part of an array
 			for (int j = i; j < ListSize(list) + 2; j++)
 			{
 				memcpy(list[j], list[j + 1], sizeof(list[j + 1]));
@@ -73,12 +89,12 @@ void ListRemove(char** list, char* str)
 	}
 }
 
-int ListCapacity(char** list)
+inline int ListCapacity(char** list)
 {
 	return list[0][0];
 }
 
-int ListSize(char** list)
+inline int ListSize(char** list)
 {
 	return list[1][0];
 }
