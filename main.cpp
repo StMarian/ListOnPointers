@@ -52,12 +52,40 @@ int main()
 		{
 		case '1':
 			cout << "listing array:" << endl;
-			PrintList(list);
+			PrintList(list);	
 			break;
 		case '2':
-			cout << "Enter string to be added: ";
+			cout << "Enter string to be added:\n";
+			
+			PrintList(list);	// DELETE ME
+			
 			cin >> temp_str;
+
+			PrintList(list);	// DELETE ME
+			
+
+			// sorry for that
+			if (ListSize(list) == ListCapacity(list))
+			{	//Reallocating
+				int oldsize = ListCapacity(list);
+				int newsize = oldsize * 3 / 2 + 1;
+
+				list = reinterpret_cast<char**>(realloc(list, (ListCapacity(list) * 3 / 2 + 1) * sizeof(char*)));
+
+				for (int i = oldsize; i < newsize; i++)
+				{
+					list[2 + i] = nullptr;
+//					list[2 + i] = "ooppoo";
+//					strcpy(list[2 + i], "X");
+				}
+				PrintList(list);	// DELETE ME
+				list[0][0] = newsize;
+
+				PrintList(list);
+			}
+
 			ListAdd(list, temp_str);
+			PrintList(list);
 			break;
 		case '3':
 			cout << "Enter string to be removed: ";

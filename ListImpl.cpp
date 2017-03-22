@@ -39,19 +39,22 @@ void PrintList(char** list)
 
 	cout << "Capacity of a list: " << ListCapacity(list) << "| strings in list: " << ListSize(list) << endl;
 
-	for (int i = 2; i < ListCapacity(list) + 2; i++)
+	for (int i = 2; i < ListSize(list) + 2; i++)
 		printf("String #%d(length: %lu): %s\n", i - 2, strlen(list[i]), list[i]);
+		//cout << list[i] << endl;
 } 
 
 // TODO reset capacity
 void ReallocateList(char*** list, size_t oldsize, size_t newsize)
 {
 	*list = reinterpret_cast<char**>(realloc(*list, newsize * sizeof(char**)));
+	
+	//memset(*list + oldsize, '\0', (oldsize - newsize) * sizeof(char*));
 
-	memset(*list + oldsize * sizeof(char*), 0, newsize * sizeof(char));
-
-	*list[0][0] = newsize; // delete
-	PrintList(*list);
+	for (int i = oldsize; i < newsize; i++)
+	{
+		*list[i] = nullptr;
+	}
 
 	if (list == NULL)
 	{
@@ -63,13 +66,22 @@ void ReallocateList(char*** list, size_t oldsize, size_t newsize)
 
 void ListAdd(char** list, char* str)
 {
-	if (ListSize(list) == ListCapacity(list))
-		ReallocateList(&list, sizeof(char) * ListCapacity(list), sizeof(char) * (ListCapacity(list) * 3 / 2 + 1));
+//	if (ListSize(*list) == ListCapacity(*list))
+//		ReallocateList(list, ListCapacity(*list), ListCapacity(*list) * 3 / 2 + 1);
 	
 	// size increased
 	list[1][0]++;
 
-	memcpy(list[1 + ListSize(list)], str, sizeof(str));
+	int index = 1 + ListSize(list);
+
+	//memcpy(&list[1 + ListSize(list)], &str, sizeof(str));
+	strcpy(list[1 + ListSize(list)], str);
+//	char* tmp = "0";
+//	char* pmt = "1";
+//	memcpy(tmp, pmt, sizeof(pmt));
+//	strcpy_s(list[index], sizeof(list[index]), str);
+
+	PrintList(list);
 }
 
 void ListRemove(char** list, char* str)
