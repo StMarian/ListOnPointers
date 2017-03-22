@@ -4,21 +4,26 @@
 
 void ListInit(char*** list, int length)
 {
-	*list = (char**)malloc((sizeof(char*) * length + 1) + sizeof(NULL));
+	// first 2 entries would be capacity and actual size of a list
+	*list = reinterpret_cast<char**>(calloc(length + 2, sizeof(char*)));
 
-	for (int i = 0; i < length; i++)
+	*(list)[0] = reinterpret_cast<char*>(calloc(1, sizeof(char)));
+	*(list)[1] = reinterpret_cast<char*>(calloc(1, sizeof(char)));	// trouble here
+	
+	for (int i = 2; i < length + 2; i++)
 	{
-		*(*(list + i)) = (char*)malloc(sizeof(char) * 32);
-		// to initialize or not to initialize?
-		*list[i] = "test";
+		*(list)[i] = reinterpret_cast<char*>(calloc(32, sizeof(char)));
 	}
-
-	// end of list
-	*list[length] = NULL;
 }
 
-void ListDestroy(char** list)
+void ListDestroy(char*** list)
 {
+	for (int i = 0; i < ListCapacity(*list); i++)
+	{
+		free(*list[i]);
+	}
+
+	free(*list);
 }
 
 void PrintList(char** list)
@@ -37,13 +42,14 @@ void ListRemove(char** list, char* str)
 {
 }
 
+int ListCapacity(char** list)
+{
+	return list[0][0];
+}
+
 int ListSize(char** list)
 {
-	size_t count = 0;
-	while (!list[count] == NULL)
-		count++;
-
-	return count;
+	return list[1][0];
 }
 
 int ListIndexOf(char** list, char* str)

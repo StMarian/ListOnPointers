@@ -5,10 +5,39 @@ using namespace std;
 
 int main()
 {
-	char** list = 0;
-	ListInit(&list);
+	char** list;
+	//ListInit(&list);	 -- doesn't work
 
-	cout << "Press\n1 to list your array\n2 to enter and add string to an array\n3 to enter and remove string from array\n4 to get the numbers of strings in array\n5 to enter a string and find index of it in array\nq to quit\n";
+	// allocate memory
+	list = reinterpret_cast<char**>(calloc(10 + 2, sizeof(char*)));
+	
+	// capacity
+	list[0] = reinterpret_cast<char*>(calloc(1, sizeof(int)));
+	list[0][0] = 12;			
+	
+	// size
+	list[1] = reinterpret_cast<char*>(calloc(1, sizeof(int)));
+	list[1][0] = 0;				
+
+	if (!list == NULL)
+	{
+		for (int i = 2; i < 12; i++)
+		{
+			list[i] = reinterpret_cast<char*>(calloc(32, sizeof(char)));
+		}
+	}
+	else // problem with allocation
+	{
+		cout << "Memory trouble!\n";
+		system("pause");
+		return -1;
+	}
+	// end of a list		-- TODO: unnecessasry
+	list[12] = NULL;
+
+	// end allocate memory
+
+	cout << "Press\n1 to list your array\n2 to enter and add string to an array\n3 to enter and remove string from array\n4 to get the numbers of strings in array\n5 to get the capacity of the list\n6 to enter a string and find index of it in array\nq to quit\n";
 	char choise = '0';
 
 	while ((choise = getchar()) != 'q')
@@ -27,23 +56,28 @@ int main()
 		case '2':
 			cout << "Enter string to be added: ";
 			cin >> temp_str;
+			// TODO
 			break;
 		case '3':
 			cout << "Enter string to be removed: ";
 			cin >> temp_str;
+			// TODO
 			break;
 		case '4':
-			cout << "Numbers in string: " << endl;
+			cout << "Number of strings in list: " << endl;
+			cout << ListSize(list);
 			break;
 		case '5':
-			cout << "Enter string to find it's index: ";
-			cin >> temp_str;
+			cout << "Capacity of a list: ";
+			cout << ListCapacity(list);
 			break;
 		default:
 			cout << "Bad input!" << endl;
 			break;
 		}
 	}
+
+	ListDestroy(&list);
 
 	system("pause");
 	return 0;
