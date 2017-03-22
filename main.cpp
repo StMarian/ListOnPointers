@@ -81,7 +81,9 @@ int main()
 			cout << ListCapacity(list) << endl;
 			break;
 		case '6':
-			//TODO
+			cout << "Enter a string to find: ";
+			cin >> temp_str;
+			cout << "Index: " << ListIndexOf(list, temp_str) << endl;
 			break;
 		default:
 			cout << "Bad input!" << endl;

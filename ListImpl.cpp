@@ -62,7 +62,6 @@ void ListRemove(char** list, char* str)
 	{
 		if (!strcmp(list[i], str))	// strcmp returns 0 when strings are equal
 		{
-			//list[i] = NULL;
 			list[1][0]--;
 
 			// shift right part of an array
@@ -84,7 +83,13 @@ int ListSize(char** list)
 	return list[1][0];
 }
 
+// counts index exluding first two places in a list
 int ListIndexOf(char** list, char* str)
 {
-	return 0;
+	for (int i = 2; i < ListSize(list) + 2; i++)
+		if (!strcmp(list[i], str))
+			return i - 2;
+	
+	// if not found
+	return -1;
 }
