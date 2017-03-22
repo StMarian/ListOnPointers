@@ -28,14 +28,33 @@ void ListDestroy(char*** list)
 
 void PrintList(char** list)
 {
-	// TODO: use ListSize();
-	for (int i = 0; list[i] != NULL; i++) {
-		printf("Line #%d(length: %lu): %s\n", i, strlen(list[i]), list[i]);
+	if (ListSize(list) == 0)
+	{
+		cout << "List is empty!" << endl;
+		return;
 	}
-}
+
+	cout << "Capacity of a list: " << ListCapacity(list) << "| strings in list: " << ListSize(list) << endl;
+
+	for (int i = 2; i < ListSize(list) + 2; i++) {
+		printf("String #%d(length: %lu): %s\n", i - 2, strlen(list[i]), list[i]);
+	}
+} 
 
 void ListAdd(char** list, char* str)
 {
+	if (ListSize(list) == ListCapacity(list))
+	{
+		cout << "No place in list!" << endl;
+		return;
+	}
+
+
+	// size increased
+	list[1][0]++;
+
+	memcpy(list[1 + ListSize(list)], str, sizeof(str));
+
 }
 
 void ListRemove(char** list, char* str)

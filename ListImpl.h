@@ -3,6 +3,11 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <iostream> 
+using std::cout;
+using std::endl;
+using std::cin;
+
 // Initialize a list, set length+1 item to NULL
 void ListInit(char*** list, int length = 16);
 // Destroy list and set pointer to NULL
