@@ -4,35 +4,13 @@
 int main()
 {
 	char** list;
-	//ListInit(&list);	 -- someone, explain me why it doesn't work
 
 	int init_size;
 	cout << "Enter initial size of a list: ";
 	cin >> init_size;
-	
 	system("cls");
 
-	// ---- allocate memory -----	
-	list = reinterpret_cast<char**>(calloc(init_size + 2, sizeof(char*)));
-	
-	// capacity
-	list[0] = reinterpret_cast<char*>(calloc(1, sizeof(int)));
-	list[0][0] = init_size;
-	
-	// size
-	list[1] = reinterpret_cast<char*>(calloc(1, sizeof(int)));
-	list[1][0] = 0;				
-
-	if (!list == NULL)
-	{
-		for (int i = 2; i < init_size + 2; i++)
-		{
-			list[i] = reinterpret_cast<char*>(calloc(STR_MAX_LEN, sizeof(char)));
-		}
-	}
-	else // means problem with memory allocation
-		MemFailed();
-	// ----- end allocate memory -----
+	ListInit(&list, init_size);	
 
 	cout << "Press\n1 to list your array\n2 to enter and add string to an array\n3 to enter and remove string from array"
 		"\n4 to get the numbers of strings in array\n5 to get the capacity of the list\n6 to enter a string and find index of it in array"
@@ -55,40 +33,7 @@ int main()
 		case '2':
 			cout << "Enter string to be added:\n";
 			cin >> temp_str;		
-	
-			// _______________TODO______________
-			// sorry for that
-			//if (ListSize(list) == ListCapacity(list))
-			//{	//Reallocating
-			//	int oldsize = ListCapacity(list) + 2;
-			//	int newsize = oldsize * 3 / 2 + 1;
-			//
-			//	int i;
-			//	char** safe;
-			//	safe = reinterpret_cast<char**>(realloc(list, newsize * sizeof(char*)));
-			//	if (safe == NULL)
-			//		MemFailed();
-			//	else
-			//		list = safe;
-			//
-			//	for (i = oldsize; i < newsize; i++)
-			//		(list)[i] = NULL;
-			//
-			//	for (i = 0; i < newsize; i++)
-			//	{
-			//		char* new_ptr = reinterpret_cast<char*>(realloc((list)[i], newsize * sizeof(char)));
-			//
-			//		if (new_ptr == NULL)
-			//			MemFailed();
-			//		else
-			//			(list)[i] = new_ptr;
-			//	}
-			//
-			//	list[0][0] = newsize;	
-			//}		
-
 			ListAdd(&list, temp_str);
-
 			break;
 		case '3':
 			cout << "Enter string to be removed: ";

@@ -2,23 +2,28 @@
 
 #include <stdio.h> // fot printf
 
-/*  TODO - problem
-	calls form this:
-	char** list;
-	ListInit(&list);
-*/
 void ListInit(char*** list, int length)
 {
 	// first 2 entries would be capacity and actual size of a list
 	*list = reinterpret_cast<char**>(calloc(length + 2, sizeof(char*)));
 
-	(*list)[0] = reinterpret_cast<char*>(calloc(1, sizeof(char)));
-	(*list)[1] = reinterpret_cast<char*>(calloc(1, sizeof(char)));	// trouble here
+	// feature
+	// actually, it would be better to give list[0] two memory cells, and store 
+	// capacity and size in list[0][0] and list[0][1]
 	
-	for (int i = 2; i < length + 2; i++)
-	{
-		(*list)[i] = reinterpret_cast<char*>(calloc(STR_MAX_LEN, sizeof(char)));
-	}
+	// capacity
+	(*list)[0] = reinterpret_cast<char*>(calloc(1, sizeof(int)));
+	(*list)[0][0] = length;
+
+	// size
+	(*list)[1] = reinterpret_cast<char*>(calloc(1, sizeof(int)));
+	(*list)[1][0] = 0;
+	
+	if (!(*list) == NULL)
+		for (int i = 2; i < length + 2; i++)
+			(*list)[i] = reinterpret_cast<char*>(calloc(STR_MAX_LEN, sizeof(char)));
+	else
+		MemFailed();
 }
 
 void ListDestroy(char*** list)
@@ -44,7 +49,6 @@ void PrintList(char** list)
 		printf("String #%d(length: %lu): %s\n", i - 2, strlen(list[i]), list[i]);
 } 
 
-// TODO reset capacity
 void ReallocateList(char*** list, size_t old_cap, size_t new_cap)
 {
 	int i;
@@ -74,7 +78,9 @@ void ReallocateList(char*** list, size_t old_cap, size_t new_cap)
 void ListAdd(char*** list, char* str)
 {
 	if (ListSize(*list) == ListCapacity(*list))
-		ReallocateList(list, ListCapacity(*list) + 2, ListCapacity(*list) * 3 / 2 + 1);
+		// each capacity increased by 2 to fit real capacity
+		// (Capacity * 3 / 2 + 1) - formula for new capacity value
+		ReallocateList(list, ListCapacity(*list) + 2, ListCapacity(*list) * 3 / 2 + 1 + 2);
 	
 	// size increased
 	(*list)[1][0]++;
