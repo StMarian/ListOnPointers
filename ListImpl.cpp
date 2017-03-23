@@ -9,7 +9,7 @@ void SignalHandler(int signal)
 	throw "!Access Violation!";
 }
 
-void ListInit(char*** list, int length)
+void ListInit(char*** list, unsigned int length)
 {
 	// TODO normal check
 	SignalHandlerPointer previousHandler = signal(SIGSEGV, SignalHandler);
@@ -27,12 +27,12 @@ void ListInit(char*** list, int length)
 		// capacity and size in list[0][0] and list[0][1]
 
 		// capacity
-		(*list)[0] = reinterpret_cast<char*>(calloc(1, sizeof(int)));
-		((int**)*list)[0][0] = length;
+		(*list)[0] = reinterpret_cast<char*>(calloc(1, sizeof(unsigned int)));
+		((unsigned int**)*list)[0][0] = length;
 
 		// size
-		(*list)[1] = reinterpret_cast<char*>(calloc(1, sizeof(int)));
-		((int**)*list)[1][0] = 0;
+		(*list)[1] = reinterpret_cast<char*>(calloc(1, sizeof(unsigned int)));
+		((unsigned int**)*list)[1][0] = 0;
 
 		//if (!((*list) == NULL))
 		if(*list != NULL)
@@ -43,6 +43,7 @@ void ListInit(char*** list, int length)
 	}
 }
 
+// TODO
 void ListDestroy(char*** list)
 {
 	for (int i = 0; i < ListCapacity(*list); i++)

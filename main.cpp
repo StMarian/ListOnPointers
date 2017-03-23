@@ -16,6 +16,8 @@ int main()
 	return 0;
 	//*/
 
+	ListInit(&list, -1);
+
 	int init_size;
 	cout << "Enter initial size of a list: ";
 	cin >> init_size;

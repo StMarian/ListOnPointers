@@ -18,7 +18,7 @@ inline void MemFailed()
 }
 
 // Initialize a list, set length+1 item to NULL
-void ListInit(char*** list, int length = 16);
+void ListInit(char*** list, unsigned int length = 16);
 // Destroy list and set pointer to NULL
 void ListDestroy(char*** list);
 
