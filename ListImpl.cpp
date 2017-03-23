@@ -1,28 +1,45 @@
 #include "ListImpl.h"
-#include <stdio.h> // fot printf
+#include <stdio.h> // for printf
+#include <signal.h> // for exception handling
+
+typedef void(*SignalHandlerPointer)(int);
+void SignalHandler(int signal)
+{
+	printf("Signal %d", signal);
+	throw "!Access Violation!";
+}
 
 void ListInit(char*** list, int length)
 {
-	// first 2 entries would be capacity and actual size of a list
-	*list = reinterpret_cast<char**>(calloc(length + 2, sizeof(char*)));
+	// TODO normal check
+	SignalHandlerPointer previousHandler = signal(SIGSEGV, SignalHandler);
+	try {
+		if (((int**)*list)[0][0]) // Should produce an exception when isn't initialized
+			cout << "List is already initialized!\n";
+	}
+	catch (char *e)
+	{
+		// first 2 entries would be capacity and actual size of a list
+			*list = reinterpret_cast<char**>(calloc(length + 2, sizeof(char*)));
 
-	// feature
-	// actually, it would be better to give list[0] two memory cells, and store 
-	// capacity and size in list[0][0] and list[0][1]
-	
-	// capacity
-	(*list)[0] = reinterpret_cast<char*>(calloc(1, sizeof(int)));
-	(*list)[0][0] = length;
+		// feature
+		// actually, it would be better to give list[0] two memory cells, and store 
+		// capacity and size in list[0][0] and list[0][1]
 
-	// size
-	(*list)[1] = reinterpret_cast<char*>(calloc(1, sizeof(int)));
-	(*list)[1][0] = 0;
-	
-	if (!(*list) == NULL)
-		for (int i = 2; i < length + 2; i++)
-			(*list)[i] = reinterpret_cast<char*>(calloc(STR_MAX_LEN, sizeof(char)));
-	else
-		MemFailed();
+		// capacity
+		(*list)[0] = reinterpret_cast<char*>(calloc(1, sizeof(int)));
+		((int**)*list)[0][0] = length;
+
+		// size
+		(*list)[1] = reinterpret_cast<char*>(calloc(1, sizeof(int)));
+		((int**)*list)[1][0] = 0;
+
+		if (!(*list) == NULL)
+			for (int i = 2; i < length + 2; i++)
+				(*list)[i] = reinterpret_cast<char*>(calloc(STR_MAX_LEN, sizeof(char)));
+		else
+			MemFailed();
+	}
 }
 
 void ListDestroy(char*** list)

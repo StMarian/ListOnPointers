@@ -3,6 +3,20 @@
 int main()
 {
 	char** list;
+	//-- test area
+	/*
+	Passed this challenge
+	for (int i = 0; i < 2000; i++)
+	{
+		ListInit(&list, 255);
+		ListInit(&list, 255);
+	
+		ListDestroy(&list);
+	}
+	
+	system("pause");
+	return 0;
+	//*/
 
 	int init_size;
 	cout << "Enter initial size of a list: ";
