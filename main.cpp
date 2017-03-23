@@ -2,28 +2,12 @@
 
 int main()
 {
-	char** list;
-	//-- test area
-	/*  Deal with this
-
-	ListInit(&list, 127);
-
-	printf("%d\n", ListCapacity(list));
-
-	ListDestroy(&list);
-	
-	system("pause");
-	return 0;
-	//*/
-
-	ListInit(&list, -1);
-
 	int init_size;
 	cout << "Enter initial size of a list: ";
 	cin >> init_size;
 	system("cls");
 
-	ListInit(&list, init_size);	
+	char** list = ListCreate(init_size);
 
 	cout << "Press\n1 to list your array\n2 to enter and add string to an array\n3 to enter and remove string from array"
 		"\n4 to get the numbers of strings in array\n5 to get the capacity of the list\n6 to enter a string and find index of it in array"
@@ -40,7 +24,6 @@ int main()
 		switch (choise)
 		{
 		case '1':
-			cout << "listing array:" << endl;
 			PrintList(list);	
 			break;
 		case '2':

@@ -1,163 +1,156 @@
 #include "ListImpl.h"
 #include <stdio.h> // for printf
-#include <signal.h> // for exception handling
 
-typedef void(*SignalHandlerPointer)(int);
-void SignalHandler(int signal)
+char** ListCreate(unsigned int length)
 {
-	//printf("Signal %d", signal);
-	throw "!Access Violation!";
-}
+	unsigned int memory_block_size = 2 * sizeof(unsigned int) + length * sizeof(char*);
+	
+	void* memory = malloc(memory_block_size);
 
-void ListInit(char*** list, unsigned int length)
-{
-	// TODO normal check
-	SignalHandlerPointer previousHandler = signal(SIGSEGV, SignalHandler);
-	try {
-		if (((int**)*list)[0][0]) // Should produce an exception when isn't initialized
-			cout << "List is already initialized!\n";
-	}
-	catch (char *e)
-	{
-		// first 2 entries would be capacity and actual size of a list
-			*list = reinterpret_cast<char**>(calloc(length + 2, sizeof(char*)));
+	if (memory == nullptr)
+		MemFailed();
 
-		// feature
-		// actually, it would be better to give list[0] two memory cells, and store 
-		// capacity and size in list[0][0] and list[0][1]
+	memset(memory, 0, memory_block_size);
 
-		// capacity
-		(*list)[0] = reinterpret_cast<char*>(calloc(1, sizeof(unsigned int)));
-		((unsigned int**)*list)[0][0] = length;
+	int* capacity = (int*)(memory);
+	*capacity = length;
 
-		// size
-		(*list)[1] = reinterpret_cast<char*>(calloc(1, sizeof(unsigned int)));
-		((unsigned int**)*list)[1][0] = 0;
+	int* size = (int*)(capacity + 1);
+	*size = 0;
 
-		//if (!((*list) == NULL))
-		if(*list != NULL)
-			for (int i = 2; i < length + 2; i++)
-				(*list)[i] = reinterpret_cast<char*>(calloc(STR_MAX_LEN, sizeof(char)));
-		else
-			MemFailed();
-	}
+	char** list = (char**)(capacity + 2);
+
+	return list;
 }
 
 // TODO
 void ListDestroy(char*** list)
 {
-	for (int i = 0; i < ListCapacity(*list); i++)
-		free(*list[i]);
+	if (*list != nullptr)
+	{
+		unsigned int size = ListSize(*list);
 
-	free(*list);
-	list = nullptr;
+		// frees memory for all infos
+		void* mem_to_delete = ((unsigned*)(*list)) - 2;
+		free(mem_to_delete);
+
+		*list = nullptr;
+	}
 }
 
-void PrintList(char** list)
+void PrintList(char** const list)
 {
-	if (ListSize(list) == 0)
+	unsigned int size = ListSize(list);
+
+	if (size == 0)
 	{
 		cout << "List is empty!" << endl;
 		return;
 	}
 
-	cout << "Capacity of a list: " << ListCapacity(list) << "| strings in list: " << ListSize(list) << endl;
+	cout << "Capacity of a list: " << ListCapacity(list) << "| strings in list: " << size << endl;
 
-	for (int i = 2; i < ListSize(list) + 2; i++)
-		printf("String #%d(length: %lu): %s\n", i - 2, strlen(list[i]), list[i]);
+	for (int i = 0; i < size; i++)
+		printf("String #%d(length: %lu): %s\n", i, strlen(list[i]), i[list]);
 } 
 
-void ReallocateList(char*** list, size_t old_cap, size_t new_cap)
+inline void SetListCapacity(char*** const list, unsigned int const cap)
 {
-	unsigned int i;
-	char** safe;
-	safe = reinterpret_cast<char**>(realloc(*list, new_cap * sizeof(char*)));
-	if (safe == NULL)
-		MemFailed();
-	else
-		*list = safe;
-
-	for (i = old_cap; i < new_cap; i++)
-		(*list)[i] = NULL;
-	
-	for (i = 0; i < new_cap; i++)
-	{
-		char* new_ptr = reinterpret_cast<char*>(realloc((*list)[i], new_cap * sizeof(char)));
-		
-		if (new_ptr == NULL)
-			MemFailed();
-		else
-			(*list)[i] = new_ptr;
-	}
-	// set up new capacity
-	((int**)*list)[0][0] =  (int)(new_cap);
+	unsigned int* cap_ptr = (unsigned*)((*list) - 2);
+	*cap_ptr = cap;
 }
 
-void ListAdd(char*** list, char* str)
+void ListAdd(char*** list, const char* const str)
 {
 	if (ListSize(*list) == ListCapacity(*list))
-		// each capacity increased by 2 to fit real capacity
+	{
 		// (Capacity * 3 / 2 + 1) - formula for new capacity value
-		ReallocateList(list, ListCapacity(*list) + 2, ListCapacity(*list) * 3 / 2 + 1 + 2);
-	
-	// size increased
-	(*list)[1][0]++;
+		unsigned int old_capacity = ListCapacity(*list);
+		unsigned int new_capacity = old_capacity * 3 / 2 + 1;
 
-	// +1 to fit real index
-	strcpy((*list)[ListSize(*list) + 1], str);
+		void* new_mem_block = (*list) - 2;
+		new_mem_block = realloc(new_mem_block, new_capacity * sizeof(char**) + 2 * sizeof(unsigned));
+
+		if (new_mem_block == nullptr)
+		{
+			MemFailed();
+		}
+		else
+		{
+			*list = reinterpret_cast<char**>( ( (unsigned*)(new_mem_block) ) + 2 );
+			
+			memset((*list) + old_capacity, 0, (new_capacity - old_capacity) * sizeof(char*));
+			
+			SetListCapacity(list, new_capacity);
+		}
+
+	}
+
+	(*list)[ListSize(*list)] = reinterpret_cast<char*>(malloc(strlen(str) + 1));
+	strcpy((*list)[ListSize(*list)], str);
+	
+	// increments size
+	++(*((*list) - 1));
+
 }
 
-// removes first same string from End of the list
-void ListRemove(char** list, char* str)
+void ListRemove(char** const list, const char* const str)
 {
-	char c_str[100];
+	// TODO 
+	char c_str[50];
 	strcpy(c_str, str);
 
 	bool removed = false;
 
-	for (int i = ListSize(list) + 1; i > 1; i--)	
+	for (int i = ListSize(list) - 1; i >= 0; i--)	
 	{
 		if (removed)
 			break;
 
 		if (!strcmp(list[i], c_str))	// strcmp returns 0 when strings are equal
 		{
-			list[1][0]--;
+			// decrements size
+			--(*(list - 1));
 			removed = true;
 
 			// left shift by 1 pos. right part of an array
-			for (int j = i; j < ListSize(list) + 2; j++)
+			for (int j = i; j < ListSize(list); j++)
 				strcpy(list[j], list[j + 1]);
 		}
 	}
 }
 
-inline int ListCapacity(char** list)
+inline void SetListSize(char*** const list, unsigned int const size)
 {
-	return ((int**)list)[0][0];
+	unsigned int* cap_ptr = (unsigned*)(&(*list) - 1);
+	*cap_ptr = size;
 }
 
-inline int ListSize(char** list)
+inline int ListCapacity(char** const list)
 {
-	return ((int**)list)[1][0];
+	return (int)(*(list - 2));
 }
 
-// counts index excluding first two places in a list
-int ListIndexOf(char** list, char* str)
+inline int ListSize(char** const list)
 {
-	for (int i = 2; i < ListSize(list) + 2; i++)
+	return (int)(*(list - 1));
+}
+
+int ListIndexOf(char** const list, char* const str)
+{
+	for (int i = 0; i < ListSize(list); i++)
 		if (!strcmp(list[i], str))
-			return i - 2;
+			return i;
 	
 	// if not found
 	return -1;
 }
 
-void ListRemoveDuplicates(char** list)
+void ListRemoveDuplicates(char** const list)
 {
-	for (int i = 2; i < ListSize(list) + 2; i++)
+	for (int i = 0; i < ListSize(list) - 1; i++)
 	{
-		for (int j = i + 1; j < ListSize(list) + 2; j++)
+		for (int j = i + 1; j < ListSize(list); j++)
 		{
 			if (!strcmp(list[i], list[j]))
 			{
@@ -176,13 +169,13 @@ void Swap(char** s1, char** s2)
 }
 
 // Selection sort
-void ListSort(char** list)
+void ListSort(char** const list)
 {
 	int temp_min_index;
-	for (int i = 2; i < ListSize(list) + 2; i++)
+	for (int i = 0; i < ListSize(list); i++)
 	{	
 		temp_min_index = i;
-		for (int j = i + 1; j < ListSize(list) + 2; j++)
+		for (int j = i + 1; j < ListSize(list); j++)
 		{
 			if (strcmp(list[j], list[temp_min_index]) < 0) // the first character that does not match has a lower value in list[i] than in list[j]
 			{
@@ -195,9 +188,9 @@ void ListSort(char** list)
 	}
 }
 
-void ListReplaceInStrings(char** list, char* before, char* after)
+void ListReplaceInStrings(char** const list, const char* const before, const char* const after)
 {
-	for (int i = 2; i < ListSize(list) + 2; i++)
+	for (int i = 0; i < ListSize(list); i++)
 		if (!strcmp(list[i], before))
 			strcpy(list[i], after);
 }
