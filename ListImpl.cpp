@@ -123,7 +123,7 @@ inline int ListSize(char** list)
 	return list[1][0];
 }
 
-// counts index exluding first two places in a list
+// counts index excluding first two places in a list
 int ListIndexOf(char** list, char* str)
 {
 	for (int i = 2; i < ListSize(list) + 2; i++)
@@ -134,7 +134,7 @@ int ListIndexOf(char** list, char* str)
 	return -1;
 }
 
-void ListRemoveDuplicates(char ** list)
+void ListRemoveDuplicates(char** list)
 {
 	for (int i = 2; i < ListSize(list) + 2; i++)
 	{
@@ -157,7 +157,7 @@ void Swap(char** s1, char** s2)
 }
 
 // Selection sort
-void ListSort(char ** list)
+void ListSort(char** list)
 {
 	int temp_min_index;
 	for (int i = 2; i < ListSize(list) + 2; i++)
@@ -176,7 +176,7 @@ void ListSort(char ** list)
 	}
 }
 
-void ListReplaceInStrings(char ** list, char * before, char * after)
+void ListReplaceInStrings(char** list, char* before, char* after)
 {
 	for (int i = 2; i < ListSize(list) + 2; i++)
 		if (!strcmp(list[i], before))
