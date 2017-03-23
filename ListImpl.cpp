@@ -2,7 +2,7 @@
 
 #include <stdio.h> // fot printf
 
-/*
+/*  TODO - problem
 	calls form this:
 	char** list;
 	ListInit(&list);
@@ -27,6 +27,7 @@ void ListDestroy(char*** list)
 		free(*list[i]);
 
 	free(*list);
+	list = nullptr;
 }
 
 void PrintList(char** list)
@@ -41,7 +42,6 @@ void PrintList(char** list)
 
 	for (int i = 2; i < ListSize(list) + 2; i++)
 		printf("String #%d(length: %lu): %s\n", i - 2, strlen(list[i]), list[i]);
-		//cout << list[i] << endl;
 } 
 
 // TODO reset capacity
@@ -64,6 +64,7 @@ void ReallocateList(char*** list, size_t oldsize, size_t newsize)
 	}
 }
 
+// TODO - solve problem
 void ListAdd(char** list, char* str)
 {
 //	if (ListSize(*list) == ListCapacity(*list))
@@ -104,10 +105,7 @@ void ListRemove(char** list, char* str)
 
 			// left shift by 1 pos. right part of an array
 			for (int j = i; j < ListSize(list) + 2; j++)
-			{
-				//memcpy(list[j], list[j + 1], sizeof(list[j + 1]));
 				strcpy(list[j], list[j + 1]);
-			}
 		}
 	}
 }
@@ -142,8 +140,35 @@ void ListRemoveDuplicates(char ** list)
 			if (!strcmp(list[i], list[j]))
 			{
 				ListRemove(list, list[j]);
-				j--;
+				j--;		// prevents from losing data comparation (it is possible bcs we shift array when deleting)
 			}
 		}
+	}
+}
+
+void Swap(char** s1, char** s2)
+{
+	char* temp = *s1;
+	*s1 = *s2;
+	*s2 = temp;
+}
+
+// Selection sort
+void ListSort(char ** list)
+{
+	int temp_min_index;
+	for (int i = 2; i < ListSize(list) + 2; i++)
+	{	
+		temp_min_index = i;
+		for (int j = i + 1; j < ListSize(list) + 2; j++)
+		{
+			if (strcmp(list[j], list[temp_min_index]) < 0) // the first character that does not match has a lower value in list[i] than in list[j]
+			{
+				temp_min_index = j;
+			}
+		}
+
+		// swaps min value and first unsorted value in list
+		Swap(&list[i], &list[temp_min_index]);
 	}
 }

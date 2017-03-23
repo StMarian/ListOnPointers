@@ -30,3 +30,5 @@ int ListIndexOf(char** list, char* str);
 
 // Removes duplicate entries from the list
 void ListRemoveDuplicates(char** list);
+// Sorts the list of strings in ascending order
+void ListSort(char** list);

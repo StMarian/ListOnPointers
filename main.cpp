@@ -30,7 +30,7 @@ int main()
 			list[i] = reinterpret_cast<char*>(calloc(32, sizeof(char)));
 		}
 	}
-	else // problem with allocation
+	else // means problem with memory allocation
 	{
 		cout << "Memory trouble!\n";
 		system("pause");
@@ -108,11 +108,12 @@ int main()
 			cout << "Index: " << ListIndexOf(list, temp_str) << endl;
 			break;
 		case '7':
-			cout << "";
+			ListSort(list);
+			cout << "Sorted\n";
 			break;
 		case '8':
-			cout << "Removing duplicates...\n";
 			ListRemoveDuplicates(list);
+			cout << "Duplicates removed\n";
 			break;
 		default:
 			cout << "Bad input!" << endl;
