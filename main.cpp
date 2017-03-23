@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include "ListImpl.h"
 
 int main()

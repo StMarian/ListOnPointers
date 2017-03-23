@@ -1,5 +1,4 @@
 #include "ListImpl.h"
-
 #include <stdio.h> // fot printf
 
 void ListInit(char*** list, int length)
@@ -51,7 +50,7 @@ void PrintList(char** list)
 
 void ReallocateList(char*** list, size_t old_cap, size_t new_cap)
 {
-	int i;
+	unsigned int i;
 	char** safe;
 	safe = reinterpret_cast<char**>(realloc(*list, new_cap * sizeof(char*)));
 	if (safe == NULL)
@@ -72,7 +71,7 @@ void ReallocateList(char*** list, size_t old_cap, size_t new_cap)
 			(*list)[i] = new_ptr;
 	}
 	// set up new capacity
-	(*list)[0][0] = new_cap;
+	(*list)[0][0] =  (int)(new_cap);
 }
 
 void ListAdd(char*** list, char* str)
@@ -85,8 +84,8 @@ void ListAdd(char*** list, char* str)
 	// size increased
 	(*list)[1][0]++;
 
-	int index = 1 + ListSize(*list);
-	strcpy((*list)[index], str);
+	// +1 to fit real index
+	strcpy((*list)[ListSize(*list) + 1], str);
 }
 
 // removes first same string from End of the list
