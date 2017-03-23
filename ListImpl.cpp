@@ -34,7 +34,8 @@ void ListInit(char*** list, int length)
 		(*list)[1] = reinterpret_cast<char*>(calloc(1, sizeof(int)));
 		((int**)*list)[1][0] = 0;
 
-		if (!(*list) == NULL)
+		//if (!((*list) == NULL))
+		if(*list != NULL)
 			for (int i = 2; i < length + 2; i++)
 				(*list)[i] = reinterpret_cast<char*>(calloc(STR_MAX_LEN, sizeof(char)));
 		else
