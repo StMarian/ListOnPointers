@@ -45,56 +45,42 @@ void PrintList(char** list)
 } 
 
 // TODO reset capacity
-void ReallocateList(char*** list, size_t oldsize, size_t newsize)
+void ReallocateList(char*** list, size_t old_cap, size_t new_cap)
 {
 	int i;
 	char** safe;
-	safe = reinterpret_cast<char**>(realloc(*list, newsize * sizeof(char*)));
+	safe = reinterpret_cast<char**>(realloc(*list, new_cap * sizeof(char*)));
 	if (safe == NULL)
 		MemFailed();
 	else
 		*list = safe;
 
-	for (i = oldsize; i < newsize; i++)
+	for (i = old_cap; i < new_cap; i++)
 		(*list)[i] = NULL;
 	
-	for (i = 0; i < newsize; i++)
+	for (i = 0; i < new_cap; i++)
 	{
-		char* new_ptr = reinterpret_cast<char*>(realloc((*list)[i], newsize * sizeof(char)));
+		char* new_ptr = reinterpret_cast<char*>(realloc((*list)[i], new_cap * sizeof(char)));
 		
 		if (new_ptr == NULL)
 			MemFailed();
 		else
 			(*list)[i] = new_ptr;
 	}
-
-	//memset(*list + oldsize, '\0', (oldsize - newsize) * sizeof(char*));
+	// set up new capacity
+	(*list)[0][0] = new_cap;
 }
 
-// TODO - solve problem
 void ListAdd(char*** list, char* str)
 {
 	if (ListSize(*list) == ListCapacity(*list))
-		ReallocateList(list, ListCapacity(*list), ListCapacity(*list) * 3 / 2 + 1);
+		ReallocateList(list, ListCapacity(*list) + 2, ListCapacity(*list) * 3 / 2 + 1);
 	
 	// size increased
 	(*list)[1][0]++;
 
 	int index = 1 + ListSize(*list);
-	strcpy((*list)[index], str);		// trouble here
-
-/*	list[1][0]++;
-
-	int index = 1 + ListSize(list);
-
-	//memcpy(&list[1 + ListSize(list)], &str, sizeof(str));
-	strcpy(list[index], str);
-//	char* tmp = "0";
-//	char* pmt = "1";
-//	memcpy(tmp, pmt, sizeof(pmt));
-//	strcpy_s(list[index], sizeof(list[index]), str);
-
-	PrintList(list);												//*/
+	strcpy((*list)[index], str);
 }
 
 // removes first same string from End of the list
@@ -188,10 +174,6 @@ void ListSort(char ** list)
 void ListReplaceInStrings(char ** list, char * before, char * after)
 {
 	for (int i = 2; i < ListSize(list) + 2; i++)
-	{
 		if (!strcmp(list[i], before))
-		{
 			strcpy(list[i], after);
-		}
-	}
 }

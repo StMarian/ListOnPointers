@@ -56,43 +56,39 @@ int main()
 			cout << "Enter string to be added:\n";
 			cin >> temp_str;		
 	
-/*			// _______________TODO______________
+			// _______________TODO______________
 			// sorry for that
-			if (ListSize(list) == ListCapacity(list))
-			{	//Reallocating
-				int oldsize = ListCapacity(list);
-				int newsize = oldsize * 3 / 2 + 1;
+			//if (ListSize(list) == ListCapacity(list))
+			//{	//Reallocating
+			//	int oldsize = ListCapacity(list) + 2;
+			//	int newsize = oldsize * 3 / 2 + 1;
+			//
+			//	int i;
+			//	char** safe;
+			//	safe = reinterpret_cast<char**>(realloc(list, newsize * sizeof(char*)));
+			//	if (safe == NULL)
+			//		MemFailed();
+			//	else
+			//		list = safe;
+			//
+			//	for (i = oldsize; i < newsize; i++)
+			//		(list)[i] = NULL;
+			//
+			//	for (i = 0; i < newsize; i++)
+			//	{
+			//		char* new_ptr = reinterpret_cast<char*>(realloc((list)[i], newsize * sizeof(char)));
+			//
+			//		if (new_ptr == NULL)
+			//			MemFailed();
+			//		else
+			//			(list)[i] = new_ptr;
+			//	}
+			//
+			//	list[0][0] = newsize;	
+			//}		
 
-				char** safe;
-				safe = reinterpret_cast<char**>(realloc(list, newsize * sizeof(char*)));
-
-				if (safe == NULL)
-					MemFailed();
-
-				list = safe;
-
-//				memset(list + oldsize, 0, sizeof(char*) * newsize);
-/*				char* keep_old_pointer;
-				for (int i = 0; i < oldsize; i++)
-				{
-					keep_old_pointer = reinterpret_cast<char*>(realloc(list[i], newsize * sizeof(char)));
-					if (keep_old_pointer == NULL)
-						MemFailed();
-
-					list[i] = keep_old_pointer;
-				}
-
-				for (int i = oldsize; i < newsize; i++)
-					list[i] = reinterpret_cast<char*>(calloc(STR_MAX_LEN, sizeof(char)));		
-
-
-				PrintList(list);	// DELETE ME
-				list[0][0] = newsize;
-
-				PrintList(list);
-			}																//*/
 			ListAdd(&list, temp_str);
-			PrintList(list);
+
 			break;
 		case '3':
 			cout << "Enter string to be removed: ";
