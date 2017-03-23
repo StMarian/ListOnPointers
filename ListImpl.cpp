@@ -5,7 +5,7 @@
 typedef void(*SignalHandlerPointer)(int);
 void SignalHandler(int signal)
 {
-	printf("Signal %d", signal);
+	//printf("Signal %d", signal);
 	throw "!Access Violation!";
 }
 
@@ -88,7 +88,7 @@ void ReallocateList(char*** list, size_t old_cap, size_t new_cap)
 			(*list)[i] = new_ptr;
 	}
 	// set up new capacity
-	(*list)[0][0] =  (int)(new_cap);
+	((int**)*list)[0][0] =  (int)(new_cap);
 }
 
 void ListAdd(char*** list, char* str)
@@ -132,12 +132,12 @@ void ListRemove(char** list, char* str)
 
 inline int ListCapacity(char** list)
 {
-	return list[0][0];
+	return ((int**)list)[0][0];
 }
 
 inline int ListSize(char** list)
 {
-	return list[1][0];
+	return ((int**)list)[1][0];
 }
 
 // counts index excluding first two places in a list
