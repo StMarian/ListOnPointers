@@ -27,15 +27,11 @@ int main()
 	{
 		for (int i = 2; i < init_size + 2; i++)
 		{
-			list[i] = reinterpret_cast<char*>(calloc(32, sizeof(char)));
+			list[i] = reinterpret_cast<char*>(calloc(STR_MAX_LEN, sizeof(char)));
 		}
 	}
 	else // means problem with memory allocation
-	{
-		cout << "Memory trouble!\n";
-		system("pause");
-		exit(-1);
-	}
+		MemFailed();
 	// ----- end allocate memory -----
 
 	cout << "Press\n1 to list your array\n2 to enter and add string to an array\n3 to enter and remove string from array"
@@ -67,20 +63,35 @@ int main()
 				int oldsize = ListCapacity(list);
 				int newsize = oldsize * 3 / 2 + 1;
 
-				list = reinterpret_cast<char**>(realloc(list, newsize * sizeof(char*)));
+				char** safe;
+				safe = reinterpret_cast<char**>(realloc(list, newsize * sizeof(char*)));
+
+				if (safe == NULL)
+					MemFailed();
+
+				list = safe;
+
+//				memset(list + oldsize, 0, sizeof(char*) * newsize);
+/*				char* keep_old_pointer;
+				for (int i = 0; i < oldsize; i++)
+				{
+					keep_old_pointer = reinterpret_cast<char*>(realloc(list[i], newsize * sizeof(char)));
+					if (keep_old_pointer == NULL)
+						MemFailed();
+
+					list[i] = keep_old_pointer;
+				}
 
 				for (int i = oldsize; i < newsize; i++)
-				{
-					list[2 + i] = nullptr;
-//					list[2 + i] = "ooppoo";
-//					strcpy(list[2 + i], "X");
-				}
+					list[i] = reinterpret_cast<char*>(calloc(STR_MAX_LEN, sizeof(char)));		
+
+
 				PrintList(list);	// DELETE ME
 				list[0][0] = newsize;
 
 				PrintList(list);
 			}																//*/
-			ListAdd(list, temp_str);
+			ListAdd(&list, temp_str);
 			PrintList(list);
 			break;
 		case '3':

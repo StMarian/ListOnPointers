@@ -3,10 +3,19 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define STR_MAX_LEN 32
+
 #include <iostream> 
 using std::cout;
 using std::endl;
 using std::cin;
+
+inline void MemFailed()
+{
+	cout << "Memory trouble!\n";
+	system("pause");
+	exit(-1);
+}
 
 // Initialize a list, set length+1 item to NULL
 void ListInit(char*** list, int length = 16);
@@ -17,7 +26,7 @@ void ListDestroy(char*** list);
 void PrintList(char** list);
 
 // Inserts value at the end of the list
-void ListAdd(char** list, char* str);
+void ListAdd(char*** list, char* str);
 // Removes all occurrences of str in the list
 void ListRemove(char** list, char* str);
 

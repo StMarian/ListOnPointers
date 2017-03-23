@@ -12,12 +12,12 @@ void ListInit(char*** list, int length)
 	// first 2 entries would be capacity and actual size of a list
 	*list = reinterpret_cast<char**>(calloc(length + 2, sizeof(char*)));
 
-	*(list)[0] = reinterpret_cast<char*>(calloc(1, sizeof(char)));
-	*(list)[1] = reinterpret_cast<char*>(calloc(1, sizeof(char)));	// trouble here
+	(*list)[0] = reinterpret_cast<char*>(calloc(1, sizeof(char)));
+	(*list)[1] = reinterpret_cast<char*>(calloc(1, sizeof(char)));	// trouble here
 	
 	for (int i = 2; i < length + 2; i++)
 	{
-		*(list)[i] = reinterpret_cast<char*>(calloc(32, sizeof(char)));
+		(*list)[i] = reinterpret_cast<char*>(calloc(STR_MAX_LEN, sizeof(char)));
 	}
 }
 
@@ -47,31 +47,43 @@ void PrintList(char** list)
 // TODO reset capacity
 void ReallocateList(char*** list, size_t oldsize, size_t newsize)
 {
-	*list = reinterpret_cast<char**>(realloc(*list, newsize * sizeof(char**)));
+	int i;
+	char** safe;
+	safe = reinterpret_cast<char**>(realloc(*list, newsize * sizeof(char*)));
+	if (safe == NULL)
+		MemFailed();
+	else
+		*list = safe;
+
+	for (i = oldsize; i < newsize; i++)
+		(*list)[i] = NULL;
 	
+	for (i = 0; i < newsize; i++)
+	{
+		char* new_ptr = reinterpret_cast<char*>(realloc((*list)[i], newsize * sizeof(char)));
+		
+		if (new_ptr == NULL)
+			MemFailed();
+		else
+			(*list)[i] = new_ptr;
+	}
+
 	//memset(*list + oldsize, '\0', (oldsize - newsize) * sizeof(char*));
-
-	for (int i = oldsize; i < newsize; i++)
-	{
-		*list[i] = nullptr;
-	}
-
-	if (list == NULL)
-	{
-		cout << "Memory trouble!\n";
-		system("pause");
-		exit(-1);
-	}
 }
 
 // TODO - solve problem
-void ListAdd(char** list, char* str)
+void ListAdd(char*** list, char* str)
 {
-//	if (ListSize(*list) == ListCapacity(*list))
-//		ReallocateList(list, ListCapacity(*list), ListCapacity(*list) * 3 / 2 + 1);
+	if (ListSize(*list) == ListCapacity(*list))
+		ReallocateList(list, ListCapacity(*list), ListCapacity(*list) * 3 / 2 + 1);
 	
 	// size increased
-	list[1][0]++;
+	(*list)[1][0]++;
+
+	int index = 1 + ListSize(*list);
+	strcpy((*list)[index], str);		// trouble here
+
+/*	list[1][0]++;
 
 	int index = 1 + ListSize(list);
 
@@ -82,10 +94,10 @@ void ListAdd(char** list, char* str)
 //	memcpy(tmp, pmt, sizeof(pmt));
 //	strcpy_s(list[index], sizeof(list[index]), str);
 
-	PrintList(list);
+	PrintList(list);												//*/
 }
 
-// removes first same string from end of the list
+// removes first same string from End of the list
 void ListRemove(char** list, char* str)
 {
 	char c_str[100];
