@@ -38,7 +38,9 @@ int main()
 	}
 	// ----- end allocate memory -----
 
-	cout << "Press\n1 to list your array\n2 to enter and add string to an array\n3 to enter and remove string from array\n4 to get the numbers of strings in array\n5 to get the capacity of the list\n6 to enter a string and find index of it in array\nq to quit\n";
+	cout << "Press\n1 to list your array\n2 to enter and add string to an array\n3 to enter and remove string from array"
+		"\n4 to get the numbers of strings in array\n5 to get the capacity of the list\n6 to enter a string and find index of it in array"
+		"\n7 to sort list\n8 to remove duplicates\nq to quit\n";
 	
 	char choise = '0';
 	char* temp_str = (char*)malloc(sizeof(char) * 50);
@@ -57,20 +59,20 @@ int main()
 		case '2':
 			cout << "Enter string to be added:\n";
 			
-			PrintList(list);	// DELETE ME
+/*			PrintList(list);	// DELETE ME
 			
 			cin >> temp_str;
 
 			PrintList(list);	// DELETE ME
 			
-
+			// _______________TODO______________
 			// sorry for that
 			if (ListSize(list) == ListCapacity(list))
 			{	//Reallocating
 				int oldsize = ListCapacity(list);
 				int newsize = oldsize * 3 / 2 + 1;
 
-				list = reinterpret_cast<char**>(realloc(list, (ListCapacity(list) * 3 / 2 + 1) * sizeof(char*)));
+				list = reinterpret_cast<char**>(realloc(list, newsize * sizeof(char*)));
 
 				for (int i = oldsize; i < newsize; i++)
 				{
@@ -82,8 +84,8 @@ int main()
 				list[0][0] = newsize;
 
 				PrintList(list);
-			}
-
+			}																//*/
+			cin >> temp_str;
 			ListAdd(list, temp_str);
 			PrintList(list);
 			break;
@@ -104,6 +106,13 @@ int main()
 			cout << "Enter a string to find: ";
 			cin >> temp_str;
 			cout << "Index: " << ListIndexOf(list, temp_str) << endl;
+			break;
+		case '7':
+			cout << "";
+			break;
+		case '8':
+			cout << "Removing duplicates...\n";
+			ListRemoveDuplicates(list);
 			break;
 		default:
 			cout << "Bad input!" << endl;

@@ -75,7 +75,7 @@ void ListAdd(char** list, char* str)
 	int index = 1 + ListSize(list);
 
 	//memcpy(&list[1 + ListSize(list)], &str, sizeof(str));
-	strcpy(list[1 + ListSize(list)], str);
+	strcpy(list[index], str);
 //	char* tmp = "0";
 //	char* pmt = "1";
 //	memcpy(tmp, pmt, sizeof(pmt));
@@ -84,18 +84,29 @@ void ListAdd(char** list, char* str)
 	PrintList(list);
 }
 
+// removes first same string from end of the list
 void ListRemove(char** list, char* str)
 {
-	for (int i = 2; i < ListSize(list) + 2; i++)
+	char c_str[100];
+	strcpy(c_str, str);
+
+	bool removed = false;
+
+	for (int i = ListSize(list) + 1; i > 1; i--)	
 	{
-		if (!strcmp(list[i], str))	// strcmp returns 0 when strings are equal
+		if (removed)
+			break;
+
+		if (!strcmp(list[i], c_str))	// strcmp returns 0 when strings are equal
 		{
 			list[1][0]--;
+			removed = true;
 
 			// left shift by 1 pos. right part of an array
 			for (int j = i; j < ListSize(list) + 2; j++)
 			{
-				memcpy(list[j], list[j + 1], sizeof(list[j + 1]));
+				//memcpy(list[j], list[j + 1], sizeof(list[j + 1]));
+				strcpy(list[j], list[j + 1]);
 			}
 		}
 	}
@@ -120,4 +131,19 @@ int ListIndexOf(char** list, char* str)
 	
 	// if not found
 	return -1;
+}
+
+void ListRemoveDuplicates(char ** list)
+{
+	for (int i = 2; i < ListSize(list) + 2; i++)
+	{
+		for (int j = i + 1; j < ListSize(list) + 2; j++)
+		{
+			if (!strcmp(list[i], list[j]))
+			{
+				ListRemove(list, list[j]);
+				j--;
+			}
+		}
+	}
 }

@@ -27,3 +27,6 @@ inline int ListCapacity(char** list);
 inline int ListSize(char** list);
 // Returns the index position of the first occurrence of str in the list
 int ListIndexOf(char** list, char* str);
+
+// Removes duplicate entries from the list
+void ListRemoveDuplicates(char** list);
