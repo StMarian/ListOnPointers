@@ -32,3 +32,5 @@ int ListIndexOf(char** list, char* str);
 void ListRemoveDuplicates(char** list);
 // Sorts the list of strings in ascending order
 void ListSort(char** list);
+// Replaces every occurrence of the before, in each of the string lists's strings, with after
+void ListReplaceInStrings(char** list, char* before, char* after);

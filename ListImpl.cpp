@@ -172,3 +172,14 @@ void ListSort(char ** list)
 		Swap(&list[i], &list[temp_min_index]);
 	}
 }
+
+void ListReplaceInStrings(char ** list, char * before, char * after)
+{
+	for (int i = 2; i < ListSize(list) + 2; i++)
+	{
+		if (!strcmp(list[i], before))
+		{
+			strcpy(list[i], after);
+		}
+	}
+}
