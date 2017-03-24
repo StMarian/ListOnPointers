@@ -1,13 +1,46 @@
 #include "ListImpl.h"
 
+void testcase1()
+{
+	char** list = nullptr;
+	ListInitialize(&list);
+
+	for (int i = 0; i < 1024; ++i)
+	{
+		char buff[8];
+		ListAdd(&list, itoa(i, buff, 10));
+	}
+
+	PrintList(list);
+	ListDestroy(&list);
+	system("cls");
+}
+void testcase2()
+{
+ 	system("pause");
+	for (int i = 0; i < 32000; i++)
+	{
+		// Note: user HAVE TO to set initial value to newly definited object (Scott Meyers, "Effective C++: 55..", part 4)!
+		char** list = nullptr;				
+		ListInitialize(&list, 256);
+		ListInitialize(&list, 256);
+
+		ListDestroy(&list);
+	}
+}
+
 int main()
 {
+//	testcase1();
+//	testcase2();
+
 	int init_size;
 	cout << "Enter initial size of a list: ";
 	cin >> init_size;
 	system("cls");
 
-	char** list = ListCreate(init_size);
+	char** list = nullptr;
+	ListInitialize(&list, init_size);
 
 	cout << "Press\n1 to list your array\n2 to enter and add string to an array\n3 to enter and remove string from array"
 		"\n4 to get the numbers of strings in array\n5 to get the capacity of the list\n6 to enter a string and find index of it in array"
@@ -38,11 +71,11 @@ int main()
 			break;
 		case '4':
 			cout << "Number of strings in list: ";
-			cout << ListSize(list) << endl;
+			cout << get_ListSize(list) << endl;
 			break;
 		case '5':
 			cout << "Capacity of a list: ";
-			cout << ListCapacity(list) << endl;
+			cout << get_ListCapacity(list) << endl;
 			break;
 		case '6':
 			cout << "Enter a string to find: ";
