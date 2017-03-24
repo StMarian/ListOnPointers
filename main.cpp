@@ -28,24 +28,11 @@ void testcase2()
 		ListDestroy(&list);
 	}
 }
-void SaveStringListToFile(/*const*/ char*** stringList) {}
-
-void test_const(const char* str)
-{
-	// change data - cant perform when decl. is char* CONST str
-	str = "as";
-
-	// change pointer - cant perform when decl. is CONST char* str
-	(*str)++;
-}
 
 int main()
 {
-
-	char* str = nullptr;
-	str = "init";
-
-	test_const(str);
+	char** test_list = nullptr;
+	ListInitialize(&test_list);
 
 //	testcase1();
 //	testcase2();

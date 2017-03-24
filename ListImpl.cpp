@@ -31,7 +31,9 @@ void ListDestroy(char*** list)
 	
 		for (int i = 0; i < get_ListSize(*list); i++)
 		{
-			free(*((*list) + i));
+			void* mem_sting_to_delete = *(((*list)) + i);
+			
+			free(mem_sting_to_delete);
 			(*((*list) + i)) = nullptr;
 		}
 
