@@ -28,6 +28,7 @@ void testcase2()
 		ListDestroy(&list);
 	}
 }
+void SaveStringListToFile(/*const*/ char*** stringList) {}
 
 int main()
 {

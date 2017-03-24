@@ -57,7 +57,7 @@ void PrintList(char** const list)
 		printf("String #%d(length: %lu): %s\n", i, strlen(list[i]), i[list]);
 } 
 
-inline void set_ListCapacity(char*** const list, unsigned int const cap)
+void set_ListCapacity(char*** const list, unsigned int const cap)
 {
 	unsigned int* cap_ptr = (unsigned*)((*list) - 2);
 	*cap_ptr = cap;
@@ -117,16 +117,6 @@ void ListRemove(char** const list, char* const str)
 	}
 }
 
-inline int get_ListCapacity(char** const list)
-{
-	return (int)(*(list - 2));
-}
-
-inline int get_ListSize(char** const list)
-{
-	return (int)(*(list - 1));
-}
-
 int ListIndexOf(char** const list, char* const str)
 {
 	for (int i = 0; i < get_ListSize(list); i++)
@@ -182,6 +172,11 @@ void ListSort(char** const list)
 void ListReplaceInStrings(char** const list, const char* const before, const char* const after)
 {
 	for (int i = 0; i < get_ListSize(list); i++)
+	{
 		if (!strcmp(list[i], before))
+		{
+			list[i] = reinterpret_cast<char*>(realloc(list[i], sizeof(char) * strlen(after) + 1));
 			strcpy(list[i], after);
+		}
+	}
 }

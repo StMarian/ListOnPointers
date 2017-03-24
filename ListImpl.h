@@ -3,6 +3,8 @@
 #include <string.h>
 #include <stdio.h> // for printf
 
+
+
 #include <iostream> 
 using std::cout;
 using std::endl;
@@ -30,9 +32,9 @@ void ListAdd(char*** list, const char* const str);
 void ListRemove(char** const list, char* const str);
 
 // Returns the capacity of the list
-inline int get_ListCapacity(char** const list);
+inline int get_ListCapacity(/*const*/ char** const list) { return (int)(*(list - 2)); }
 // Returns the number of strings in the list
-inline int get_ListSize(char** const list);
+inline int get_ListSize(/*const*/ char** const list) { return (int)(*(list - 1)); }
 // Returns the index position of the first occurrence of str in the list
 int ListIndexOf(char** const list, char* str);
 
