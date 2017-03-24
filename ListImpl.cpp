@@ -60,7 +60,7 @@ void PrintList(char** const list)
 		return;
 	}
 
-	cout << "Capacity of a list: " << get_ListCapacity(list) << "| strings in list: " << size << endl;
+	std::cout << "Capacity of a list: " << get_ListCapacity(list) << "| strings in list: " << size << std::endl;
 
 	for (int i = 0; i < size; i++)
 		printf("String #%d(length: %lu): %s\n", i, strlen(list[i]), i[list]);

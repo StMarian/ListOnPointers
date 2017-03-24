@@ -2,23 +2,18 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h> // for printf
+#include <iostream> // for cout, cin, endl
 
-
-
-#include <iostream> 
-using std::cout;
-using std::endl;
-using std::cin;
 
 // Problems with memory allocation
 inline void MemFailed()
 {
-	cout << "Memory trouble!\n";
+	std::cout << "Memory trouble!\n";
 	system("pause");
 	exit(-1);
 }
 // System warnings and info
-inline void Info(char const* const info) { cout << info << endl; }
+inline void Info(char const* const info) { std::cout << info << std::endl; }
 
 // Initialise a list
 void ListInitialize(char*** list, unsigned int length = 16);
