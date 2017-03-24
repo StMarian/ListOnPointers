@@ -50,7 +50,7 @@ void ListDestroy(char*** list)
 	}
 }
 
-void PrintList(char** const list)
+void PrintList(const char* const* list)
 {
 	unsigned int size = get_ListSize(list);
 
@@ -131,7 +131,7 @@ void ListRemove(char** const list, char* const str)
 	}
 }
 
-int ListIndexOf(char** const list, char* const str)
+int ListIndexOf(const char* const* list, char* const str)
 {
 	for (int i = 0; i < get_ListSize(list); i++)
 		if (!strcmp(list[i], str))

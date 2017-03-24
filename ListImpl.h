@@ -4,6 +4,7 @@
 #include <stdio.h> // for printf
 #include <iostream> // for cout, cin, endl
 
+#define DEFAULT_LIST_INIT_SIZE 16
 
 // Problems with memory allocation
 inline void MemFailed()
@@ -16,12 +17,12 @@ inline void MemFailed()
 inline void Info(char const* const info) { std::cout << info << std::endl; }
 
 // Initialise a list
-void ListInitialize(char*** list, unsigned int length = 16);
+void ListInitialize(char*** list, unsigned int length = DEFAULT_LIST_INIT_SIZE);
 // Destroy list and set pointer to nullptr
 void ListDestroy(char*** list);
 
 // Prints list
-void PrintList(char** const list);										
+void PrintList(const char* const* list);										
 
 // Inserts value at the end of the list
 void ListAdd(char*** list, const char* const str);
@@ -29,11 +30,11 @@ void ListAdd(char*** list, const char* const str);
 void ListRemove(char** const list, char* const str);
 
 // Returns the capacity of the list
-inline int get_ListCapacity(const char* const* const list) { return (int)(*(list - 2)); }
+inline int get_ListCapacity(const char* const* list) { return (int)(*(list - 2)); }
 // Returns the number of strings in the list
-inline int get_ListSize(const char* const* const list) { return (int)(*(list - 1)); }
+inline int get_ListSize(const char* const* list) { return (int)(*(list - 1)); }
 // Returns the index position of the first occurrence of str in the list
-int ListIndexOf(char** const list, char* str);
+int ListIndexOf(const char* const* list, char* str);
 
 // Removes duplicate entries from the list
 void ListRemoveDuplicates(char** const list);
