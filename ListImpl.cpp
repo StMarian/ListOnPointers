@@ -28,6 +28,13 @@ void ListDestroy(char*** list)
 	if (*list != nullptr)
 	{
 		void* mem_to_delete = ((unsigned*)(*list)) - 2;
+	
+		for (int i = 0; i < get_ListSize(*list); i++)
+		{
+			free(*((*list) + i));
+			(*((*list) + i)) = nullptr;
+		}
+
 		free(mem_to_delete);
 
 		*list = nullptr;
