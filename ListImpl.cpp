@@ -31,8 +31,7 @@ void ListDestroy(char*** list)
 	
 		for (int i = 0; i < get_ListSize(*list); i++)
 		{
-			void* mem_sting_to_delete = *(((*list)) + i);
-			
+			void* mem_sting_to_delete = *((*list) + i);
 			free(mem_sting_to_delete);
 			(*((*list) + i)) = nullptr;
 		}
@@ -115,6 +114,11 @@ void ListRemove(char** const list, char* const str)
 			// left shift by 1 pos. right part of an array
 			for (int j = i; j < get_ListSize(list); j++)
 				strcpy(list[j], list[j + 1]);
+		
+			// free unused memory (cell, next to last shifted element)
+			void* mem_sting_to_delete = *(list + get_ListSize(list));
+			free(mem_sting_to_delete);
+			*(list + get_ListSize(list)) = nullptr;
 		}
 	}
 }
