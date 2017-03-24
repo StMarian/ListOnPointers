@@ -2,7 +2,7 @@
 
 void ListInitialize(char*** list, unsigned int length)
 {
-	if (*list == nullptr)
+	if (list != nullptr && *list == nullptr)
 	{
 		unsigned int memory_block_size = 2 * sizeof(unsigned int) + length * sizeof(char*);
 
@@ -21,11 +21,15 @@ void ListInitialize(char*** list, unsigned int length)
 
 		*list = (char**)(capacity + 2);
 	}
+	else
+	{
+		Info("Problem with initialization. Check the pointer that You passed to ListInitialize(char***, unsigned int)");
+	}
 }
 
 void ListDestroy(char*** list)
 {
-	if (*list != nullptr)
+	if (list != nullptr && *list != nullptr)
 	{
 		void* mem_to_delete = ((unsigned*)(*list)) - 2;
 	
@@ -40,6 +44,10 @@ void ListDestroy(char*** list)
 
 		*list = nullptr;
 	}
+	else
+	{
+		Info("Problem with deallocation. Check the pointer that You passed to ListDestroy(char***, unsigned int)");
+	}
 }
 
 void PrintList(char** const list)
@@ -48,7 +56,7 @@ void PrintList(char** const list)
 
 	if (size == 0)
 	{
-		cout << "List is empty!" << endl;
+		Info("List is empty");
 		return;
 	}
 

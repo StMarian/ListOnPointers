@@ -17,6 +17,8 @@ inline void MemFailed()
 	system("pause");
 	exit(-1);
 }
+// System warnings and info
+inline void Info(char const* const info) { cout << info << endl; }
 
 // Initialise a list
 void ListInitialize(char*** list, unsigned int length = 16);

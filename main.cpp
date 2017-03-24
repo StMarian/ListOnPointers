@@ -17,6 +17,7 @@ void testcase1()
 }
 void testcase2()
 {
+	ListInitialize(nullptr, -1);
  	system("pause");
 	for (int i = 0; i < 32000; i++)
 	{
@@ -109,7 +110,7 @@ int main()
 			break;
 		}
 		default:
-			cout << "Bad input!" << endl;
+			Info("Invalid input");
 			break;
 		}
 	}
