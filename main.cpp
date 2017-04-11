@@ -32,9 +32,8 @@ void testcase2()
 
 int main()
 {
-	char** test_list = nullptr;
-	ListInitialize(&test_list);
-
+//	char** test_list = nullptr;
+//	ListInitialize(&test_list);
 //	testcase1();
 //	testcase2();
 

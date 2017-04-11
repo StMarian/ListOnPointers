@@ -1,5 +1,13 @@
 #include "ListImpl.h"
 
+// Problems with memory allocation
+inline void MemFailed()
+{
+	std::cout << "Memory trouble!\n";
+	system("pause");
+	exit(-1);
+}
+
 void ListInitialize(char*** list, unsigned int length)
 {
 	if (list != nullptr && *list == nullptr)

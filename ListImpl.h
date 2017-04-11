@@ -6,13 +6,6 @@
 
 #define DEFAULT_LIST_INIT_SIZE 16
 
-// Problems with memory allocation
-inline void MemFailed()
-{
-	std::cout << "Memory trouble!\n";
-	system("pause");
-	exit(-1);
-}
 // System warnings and info
 inline void Info(char const* const info) { std::cout << info << std::endl; }
 
